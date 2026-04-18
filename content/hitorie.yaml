@@ -1,0 +1,972 @@
+version: 1
+pack:
+  id: hitorie-jp-top10-2026-04-18
+  artist:
+    name_ja: "ヒトリエ"
+    name_latn: "hitorie"
+  locale: "zh-CN"
+  output_language: "zh-CN"
+  observed_at: "2026-04-18"
+  intent: >-
+    第一份 content-pack-driven 的 Hitorie 测试内容包。它把题面、文案、歌曲画像、
+    排名决策和证据放在同一个 YAML 里，后续如果要重做题库、换 UI 语气、或更新排行榜，
+    优先改这里，不要先改代码常量。
+
+lyric_policy:
+  store_full_lyrics: false
+  allowed_storage:
+    - "歌词页链接"
+    - "不超过一句的主题概述"
+    - "必要时极短的关键词级摘记"
+  note: >-
+    本包不落库完整歌词，不复制大段歌词文本；只保存链接、主题说明、以及用于溯源的简短证据注记。
+
+editable_text:
+  pack_title: "Hitorie Top Songs Resonance Pack"
+  pack_subtitle: "不是猜你最常单曲循环哪首，而是看你最近像哪一种失真、推力和开口方式。"
+  result_prefix: "你命中的不是播放量最高的一首，是今天最像你的那种响法。"
+  result_suffix: "如果你最近的状态变了，命中的歌也会变；歌单像天气，不像身份证。"
+  ranking_badge: "Apple Music Japan Top Songs"
+  source_badge: "证据已内嵌"
+  lyric_badge: "只存链接，不存整段歌词"
+
+voice_guide:
+  core_brief: >-
+    语气要像真的听过这十首歌，不像在给“日系摇滚人格测试”套模板。允许锋利、允许偏执、
+    允许一点夜里走路才会冒出来的句子，但不要端着。
+  do:
+    - "优先写动作和触感：抬头、拧开、冲出去、卡住、失真、发亮、踩空。"
+    - "允许句子短一点，像鼓点切分，不必每段都写成完整心理咨询总结。"
+    - "如果要写温柔，写成有成本的温柔，不要写成空气净化器式安慰。"
+    - "如果要写痛感，落到具体反应，不要只说“破碎”“宿命”“救赎”。"
+    - "保留 Hitorie 的速度感、噪点和舞台感，少写抽象形容词堆叠。"
+  avoid:
+    - "避免把每首歌都写成“成长”“治愈”“拥抱脆弱”的同一种话术。"
+    - "避免把 wowaka / シノダ 的词都抹平成泛情绪文案。"
+    - "避免把动漫 tie-in 当成唯一解释；可以记，但不能盖过歌本身。"
+    - "避免把粉丝评论直接当结论，评论只能做旁证。"
+  one_line_test: "删掉歌名后，这段话还应该只像这一首，不像任何一首都能套。"
+
+ui_copy:
+  landing:
+    eyebrow: "Hitorie Resonance Test"
+    title: "你会被哪首ヒトリエ顶到胸口"
+    subtitle: >-
+      30 道题，5 条主轴，结果落到 Apple Music Japan 当前 Top Songs 里的 10 首歌。
+      排名是热门度，命中是你最近的反应方式；两者不是一回事。
+    primary_cta: "开始测"
+    secondary_cta: "先看来源"
+    ranking_note: "排行榜固定取 2026-04-18 的 Apple Music 日本区艺术家页 Top Songs。"
+  question_flow:
+    progress_label: "正在拆你的歌词反应方式"
+    likert_hint: "别选理想状态，选你最近更常发生的那种。"
+    back_button: "上一题"
+    next_button: "下一题"
+    submit_button: "看结果"
+  result_page:
+    title_template: "你更像《{title}》"
+    resonance_label: "共振度"
+    stability_label: "稳定度"
+    radar_title: "五维歌词气候"
+    evidence_title: "为什么是这首"
+    secondary_title: "接近命中的另外两首"
+    retake_button: "重新测"
+    share_button: "生成分享语"
+    sources_note: "结果页可以展示证据摘要，但歌词只展示主题说明和外链。"
+  source_panel:
+    title: "来源与证据"
+    ranking_label: "排名来源"
+    lyric_label: "歌词来源"
+    comments_label: "评论旁证"
+    storefront_warning: "Apple Music 热门歌曲会随 storefront 和时间变化，请保留日期与地区。"
+
+likert_labels:
+  - "很不像我"
+  - "不太像我"
+  - "一半一半"
+  - "挺像我"
+  - "非常像我"
+
+dimensions:
+  - id: "spark"
+    name: "点燃 / 定影"
+    short_name: "点燃"
+    description: "你更常靠先动起来把自己点着，还是先把情绪和局面定住再行动。"
+    positive_label: "点燃"
+    negative_label: "定影"
+    positive_hint: "先冲出一点火，再决定这场火值不值得续。"
+    negative_hint: "先看清轮廓，再决定要不要让自己烧起来。"
+  - id: "distance"
+    name: "开门 / 封存"
+    short_name: "开门"
+    description: "你会主动把内里递出去一点，还是把最要命的部分留在自己手里。"
+    positive_label: "开门"
+    negative_label: "封存"
+    positive_hint: "靠近别人时，愿意先给出一点真东西。"
+    negative_hint: "真正重要的那层，通常会被你锁得很深。"
+  - id: "focus"
+    name: "幻视 / 实感"
+    short_name: "幻视"
+    description: "你更容易被画面、预感、失真感牵引，还是更信已经落地的事实和代价。"
+    positive_label: "幻视"
+    negative_label: "实感"
+    positive_hint: "会被还没说清的东西持续拉住。"
+    negative_hint: "更在乎能被碰到、被证明、会留下伤口的部分。"
+  - id: "stance"
+    name: "硬骨 / 柔光"
+    short_name: "硬骨"
+    description: "碰到摩擦时，你更想顶住自己的棱角，还是用更柔的姿态把事和人护过去。"
+    positive_label: "硬骨"
+    negative_label: "柔光"
+    positive_hint: "宁愿有冲突，也不想太快把自己磨平。"
+    negative_hint: "知道什么时候该软一点，才能让重要的东西活下来。"
+  - id: "recovery"
+    name: "索求 / 漂移"
+    short_name: "索求"
+    description: "你会直接承认自己想要什么，还是习惯在关系和状态变重前先飘开一点。"
+    positive_label: "索求"
+    negative_label: "漂移"
+    positive_hint: "想要的时候，不太擅长装无所谓。"
+    negative_hint: "一旦太沉，就会本能地给自己留退路。"
+
+questions:
+  - id: "q01"
+    dimension: "spark"
+    direction: 1
+    prompt: "如果一个想法让我心动，我通常会先做一点，再决定值不值得继续。"
+  - id: "q02"
+    dimension: "spark"
+    direction: -1
+    prompt: "我更习惯把情绪放凉之后，再决定要不要行动。"
+  - id: "q03"
+    dimension: "spark"
+    direction: 1
+    prompt: "比起等时机成熟，我更愿意边试边修正。"
+  - id: "q04"
+    dimension: "spark"
+    direction: -1
+    prompt: "计划一旦被打乱，我会先停下来重排，而不是立刻硬冲。"
+  - id: "q05"
+    dimension: "spark"
+    direction: 1
+    prompt: "临场的冲动，常常比事先推演更能让我看见自己到底想要什么。"
+  - id: "q06"
+    dimension: "spark"
+    direction: -1
+    prompt: "我很少因为一时热烈就改掉原本的节奏。"
+  - id: "q07"
+    dimension: "distance"
+    direction: 1
+    prompt: "状态不稳的时候，我通常会主动去找一个能说话的人。"
+  - id: "q08"
+    dimension: "distance"
+    direction: -1
+    prompt: "再亲近的人，也很难碰到我最核心的那一层。"
+  - id: "q09"
+    dimension: "distance"
+    direction: 1
+    prompt: "如果一段关系还有继续靠近的可能，我愿意先把门打开一点。"
+  - id: "q10"
+    dimension: "distance"
+    direction: -1
+    prompt: "我更习惯自己消化情绪，而不是把它直接带进关系里。"
+  - id: "q11"
+    dimension: "distance"
+    direction: 1
+    prompt: "对我来说，被理解值得承担一点暴露自己的风险。"
+  - id: "q12"
+    dimension: "distance"
+    direction: -1
+    prompt: "哪怕很在意，我也常常把关键的话留在心里。"
+  - id: "q13"
+    dimension: "focus"
+    direction: 1
+    prompt: "我做决定时，常会被一种说不清的预感牵着走。"
+  - id: "q14"
+    dimension: "focus"
+    direction: -1
+    prompt: "比起氛围和想象，我更相信已经发生的事实。"
+  - id: "q15"
+    dimension: "focus"
+    direction: 1
+    prompt: "一个人真正的样子，常常藏在他没说出口的那些画面里。"
+  - id: "q16"
+    dimension: "focus"
+    direction: -1
+    prompt: "如果一件事暂时看不见落点，我很难一直投入热情。"
+  - id: "q17"
+    dimension: "focus"
+    direction: 1
+    prompt: "我会被模糊、暧昧、带一点幻觉感的东西长久吸引。"
+  - id: "q18"
+    dimension: "focus"
+    direction: -1
+    prompt: "我更容易被明确、可验证、能落地的东西说服。"
+  - id: "q19"
+    dimension: "stance"
+    direction: 1
+    prompt: "当所有人都默认一条路的时候，我反而会想试试别的方向。"
+  - id: "q20"
+    dimension: "stance"
+    direction: -1
+    prompt: "就算心里不完全认同，我也能为了整体顺利先配合。"
+  - id: "q21"
+    dimension: "stance"
+    direction: 1
+    prompt: "如果某种规则让我窒息，我会想办法把它拧开。"
+  - id: "q22"
+    dimension: "stance"
+    direction: -1
+    prompt: "很多事情与其硬碰硬，不如先顺着局面找到空间。"
+  - id: "q23"
+    dimension: "stance"
+    direction: 1
+    prompt: "我宁愿承受一点冲突，也不想把自己磨得太圆。"
+  - id: "q24"
+    dimension: "stance"
+    direction: -1
+    prompt: "在大多数场合里，保持流动性比坚持姿态更重要。"
+  - id: "q25"
+    dimension: "recovery"
+    direction: 1
+    prompt: "一旦真正想要某样东西，我很难装作自己其实无所谓。"
+  - id: "q26"
+    dimension: "recovery"
+    direction: -1
+    prompt: "关系、目标或情绪一旦变得太沉，我会本能地把自己抽离一点。"
+  - id: "q27"
+    dimension: "recovery"
+    direction: 1
+    prompt: "比起把渴望收起来，我更愿意正面承认自己在期待什么。"
+  - id: "q28"
+    dimension: "recovery"
+    direction: -1
+    prompt: "很多时候我宁愿继续流动，也不想被任何人或状态钉住。"
+  - id: "q29"
+    dimension: "recovery"
+    direction: 1
+    prompt: "我会想反复确认某种连接是不是真的存在。"
+  - id: "q30"
+    dimension: "recovery"
+    direction: -1
+    prompt: "当事情开始需要被定义时，我更容易想转身去别的地方。"
+
+ranking_decision:
+  canonical_source:
+    name: "Apple Music Japan artist page"
+    url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+    storefront: "jp"
+    section: "トップソング"
+  storefront_note: >-
+    排名只认日本区 storefront。不要拿 `us`、`cn`、`tw` 或搜索引擎缓存里的别区页面补位。
+    Apple 热门歌曲会变，这份包只冻结 2026-04-18 当天可见顺序。
+  decision_rules:
+    - "保留 Apple Music Japan 艺术家页 Top Songs 里当时可见的精确前 10 名。"
+    - "保留 Apple 页面当时显示的曲名与发行行，不在这里统一改成别名、翻译名或专辑版名。"
+    - "如果未来榜单变化，新增一个带日期的新 pack；不要静默覆盖这份 2026-04-18 快照。"
+  frozen_top_10:
+    - rank: 1
+      title: "アンノウン・マザーグース"
+      visible_release_line: "アンノウン・マザーグース - Single · 2017年"
+    - rank: 2
+      title: "オン・ザ・フロントライン"
+      visible_release_line: "オン・ザ・フロントライン - Single · 2024年"
+    - rank: 3
+      title: "3分29秒"
+      visible_release_line: "3分29秒 - Single · 2021年"
+    - rank: 4
+      title: "ポラリス"
+      visible_release_line: "ポラリス - Single · 2018年"
+    - rank: 5
+      title: "SLEEPWALK"
+      visible_release_line: "HOWLS · 2019年"
+    - rank: 6
+      title: "ワンミーツハー"
+      visible_release_line: "DEEPER · 2016年"
+    - rank: 7
+      title: "ワールズエンド・ダンスホール"
+      visible_release_line: "NOTOK - EP · 2024年"
+    - rank: 8
+      title: "センスレス・ワンダー"
+      visible_release_line: "WONDER and WONDER · 2014年"
+    - rank: 9
+      title: "トーキーダンス"
+      visible_release_line: "DEEPER · 2015年"
+    - rank: 10
+      title: "コヨーテエンゴースト"
+      visible_release_line: "HOWLS · 2019年"
+  inline_evidence:
+    - source: "Apple Music Japan artist page"
+      url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+      note: "2026-04-18 观察时，Top Songs 区块可见 10 首歌的顺序正是上面的 frozen_top_10。"
+      confidence: "high"
+
+tracks:
+  - id: "unknown-mother-goose"
+    rank: 1
+    title: "アンノウン・マザーグース"
+    romanized: "Unknown Mother-Goose"
+    apple_visible_release_line: "アンノウン・マザーグース - Single · 2017年"
+    content:
+      epithet: "把过载的爱和噪声一起唱穿的人"
+      summary: >-
+        你不是安静地相信爱，你是那种明知道话会失真、气会不够、句子会把自己逼到极限，
+        还是要把心里的东西一次唱到亮的人。你很少温吞地喜欢，通常是一头扎进去。
+      scene: >-
+        像舞台灯刚打下来，喉咙还没热开，心里那句最危险的话已经先冲出去了；
+        你甚至来不及整理，就已经在声音里暴露了自己。
+      gift: "你能把混乱、爱意和表达欲拧成推进力，情绪越满，反而越接近真话。"
+      shadow: "容易把“必须说出来”当成唯一出口，忘了自己也会因为过载而塌电。"
+      ritual: "把你最近最想说的一句话写成 12 个字以内，只保留最会发光的那一截。"
+      tags:
+        - "词太满"
+        - "失真告白"
+        - "唱到见底"
+    scoring:
+      pivot:
+        dimension: "focus"
+        pole: 1
+      vector:
+        spark: 0.36
+        distance: 0.08
+        focus: 1.0
+        stance: 0.42
+        recovery: 0.34
+      answer_style:
+        lean: 0.28
+        cadence: 0.94
+      palette:
+        accent: "#1ee2cb"
+        surface: "#101a20"
+        glow: "rgba(30, 226, 203, 0.26)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 1 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/240825/"
+          - "https://music.163.com/#/song?id=865998111"
+        note: >-
+          主题集中在“谈爱”“语言过剩”“幻色”“被声音吞没后的共通快感”，像把表达本身推到接近失控。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=865998111"
+        note: >-
+          最高赞评论反复提到这首歌难唱到离谱，还提到 wowaka 自己也笑过“写得太难唱”，
+          能佐证这首歌的核心不是温柔抒情，而是密度和压强。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie official + Apple Music song page"
+        urls:
+          - "https://www.hitorie.jp/contents/1005421"
+          - "https://music.apple.com/jp/song/1535624172"
+        note: "官方站确认 히토リエ版数位上线，Apple 单曲页可作为曲目页落点。"
+        confidence: "high"
+
+  - id: "on-the-frontline"
+    rank: 2
+    title: "オン・ザ・フロントライン"
+    romanized: "On the Frontline"
+    apple_visible_release_line: "オン・ザ・フロントライン - Single · 2024年"
+    content:
+      epithet: "把伤口绑好再往前一步的人"
+      summary: >-
+        你不是不知道代价，而是知道以后还会继续往前的人。你会犹豫、会痛、会怕失去，
+        但最后通常还是会站到该站的位置上，不太擅长把重要的事留给“改天再说”。
+      scene: >-
+        像手指还留着谁的温度，肩膀已经先转向风口。你知道前线不漂亮，
+        但你宁可带着伤去，也不想活成站在旁边评头论足的人。
+      gift: "你在现实压力里仍然能认出什么东西不能丢，这种判断很硬。"
+      shadow: "容易把责任感穿得太久，以至于把疲惫当作应付出的票价。"
+      ritual: "给最近最难放手的一件事补一个具体动作，不要只补一句“再坚持一下”。"
+      tags:
+        - "前线体温"
+        - "带伤推进"
+        - "不撤退"
+    scoring:
+      pivot:
+        dimension: "focus"
+        pole: -1
+      vector:
+        spark: 0.22
+        distance: 0.44
+        focus: -0.94
+        stance: 0.58
+        recovery: 0.26
+      answer_style:
+        lean: 0.44
+        cadence: 0.68
+      palette:
+        accent: "#38c978"
+        surface: "#102219"
+        glow: "rgba(56, 201, 120, 0.24)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 2 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/352986/"
+          - "https://music.163.com/#/song?id=2145073803"
+        note: >-
+          歌词明显把“牺牲感情走到现在”“不能失去的世界就在这里”“带着疼去明天”写成主轴，
+          整体是实感高于幻视的决断型歌曲。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=2145073803"
+        note: >-
+          热门评论强烈绑定《无职转生》角色和父子线，说明听众确实把它接收成“背负后仍继续前进”的歌，
+          但动漫语境会放大解释，因此只做中等强度旁证。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie official MV news + lyric page"
+        urls:
+          - "https://www.hitorie.jp/contents/1006375"
+          - "https://www.hitorie.jp/movies/121549"
+        note: "官方站明确写明 MV 发布与动画 OP 关联，足以确认曲目上下文。"
+        confidence: "high"
+
+  - id: "three-minutes-twenty-nine-seconds"
+    rank: 3
+    title: "3分29秒"
+    romanized: "3 Min 29 Sec"
+    apple_visible_release_line: "3分29秒 - Single · 2021年"
+    content:
+      epithet: "把最后几分钟拧成火的人"
+      summary: >-
+        你对“再拖一下就来不及了”这件事很敏感。真正逼近时，
+        你反而会比平时更清醒、更凶、更不想和旁观者站在一起。
+      scene: >-
+        像列车门快关上，脑子还没想完，身体已经先扑过去；
+        你不是不怕，只是比起袖手旁观，更怕自己也变成那一类人。
+      gift: "在倒计时、混乱和高压场景里，你往往比自己想的更能打。"
+      shadow: "容易长期把自己卡在高转速里，误把持续紧绷当成唯一有效率的样子。"
+      ritual: "把今天最拖的那件事压缩成一个 209 秒回合，只做开头，不求完结。"
+      tags:
+        - "倒计时"
+        - "反旁观"
+        - "短兵相接"
+    scoring:
+      pivot:
+        dimension: "spark"
+        pole: 1
+      vector:
+        spark: 1.0
+        distance: -0.3
+        focus: -0.42
+        stance: 0.78
+        recovery: 0.12
+      answer_style:
+        lean: 0.82
+        cadence: 1.0
+      palette:
+        accent: "#ffe265"
+        surface: "#2a220f"
+        glow: "rgba(255, 226, 101, 0.25)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 3 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/302018/"
+          - "https://music.163.com/#/song?id=1862822940"
+        note: >-
+          主题很明确：哀求也无效、现实不让步、看似旁观的人其实同样共犯，
+          所以它更像一首把迟疑压缩成动作的歌，而不是空泛热血歌。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase comments"
+        url: "https://music.163.com/#/song?id=1862822940"
+        note: >-
+          这个条目的前排评论几乎都在聊曲源迁移和“贫民窟”式收听语境，情绪解释含量很低；
+          这里保留它，主要提醒后续研究者不要过度依赖评论来写这首。
+        confidence: "low"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie official discography + Apple Music song page"
+        urls:
+          - "https://www.hitorie.jp/musics/19892"
+          - "https://music.apple.com/jp/song/1568441160"
+        note: "官方曲目信息页确认单曲发行与《86》OP 语境。"
+        confidence: "high"
+
+  - id: "polaris"
+    rank: 4
+    title: "ポラリス"
+    romanized: "Polaris"
+    apple_visible_release_line: "ポラリス - Single · 2018年"
+    content:
+      epithet: "把笨拙告白当成生存技能的人"
+      summary: >-
+        你不是那种轻松把心事说出口的人，但一旦认定该说，就会带着颤音也把它送出去。
+        你的勇敢常常不是强硬，而是明明快哭了还决定开口。
+      scene: >-
+        像夜里绕了很多弯，终于停在一个人面前，
+        心里那句“现在不说就来不及了”把你从迟疑里推了出来。
+      gift: "你能把迟来的坦白做得很真，不花哨，但会让人记很久。"
+      shadow: "容易把“只要对的人在就够了”说得太绝，结果把自己困进单一答案里。"
+      ritual: "给那个你总想再等等的人发一条更具体的消息，别只发安全话题。"
+      tags:
+        - "北极星"
+        - "迟到告白"
+        - "拐弯之后"
+    scoring:
+      pivot:
+        dimension: "recovery"
+        pole: 1
+      vector:
+        spark: 0.42
+        distance: 0.86
+        focus: 0.1
+        stance: -0.28
+        recovery: 0.88
+      answer_style:
+        lean: 0.38
+        cadence: 0.7
+      palette:
+        accent: "#6fb2ff"
+        surface: "#102031"
+        glow: "rgba(111, 178, 255, 0.24)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 4 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/258561/"
+          - "https://music.163.com/#/song?id=1321385403"
+        note: >-
+          主题是“心在叫，就得立刻传达”“遇见的数量一个就够”“被一句你会没事拯救”，
+          这让它天然落在开门与索求更高的一端。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=1321385403"
+        note: >-
+          热门评论主要围绕正版支持、偷跑与配信时点，能说明这首在上线当时热度高、关注集中，
+          但对性格画像帮助有限，因此只做低到中强度旁证。
+        confidence: "low"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie HOWLS special site + Apple Music song page"
+        urls:
+          - "https://www.hitorie.jp/howls/"
+          - "https://music.apple.com/jp/song/1538102622"
+        note: "HOWLS 特设站和 Apple 曲页都能作为曲目与官方落点。"
+        confidence: "medium"
+
+  - id: "sleepwalk"
+    rank: 5
+    title: "SLEEPWALK"
+    romanized: "SLEEPWALK"
+    apple_visible_release_line: "HOWLS · 2019年"
+    content:
+      epithet: "凌晨四点还想确认自己有没有被看见的人"
+      summary: >-
+        你对“我是不是根本没被真正看到”这件事特别敏感。你并不总会把这份缺口说得很大声，
+        但它会在夜里把你叫醒，让你一边想逃、一边还想再确认一次。
+      scene: >-
+        像刚从一场梦里惊醒，房间还是黑的，喉咙已经先哑了；
+        你嘴上说算了，心里其实还在问“那你看的到底是谁？”
+      gift: "你对关系里的错位和忽视有极高辨识度，不容易被敷衍的温柔骗过去。"
+      shadow: "容易把未被回应的部分反复咀嚼，直到自己也分不清是在追问还是自伤。"
+      ritual: "今晚把那个最想问但一直没问出口的问题写下来，先别润色。"
+      tags:
+        - "失眠审判"
+        - "看见我吗"
+        - "梦醒前夜"
+    scoring:
+      pivot:
+        dimension: "distance"
+        pole: -1
+      vector:
+        spark: -0.74
+        distance: -0.9
+        focus: 0.46
+        stance: -0.22
+        recovery: 0.52
+      answer_style:
+        lean: -0.22
+        cadence: 0.56
+      palette:
+        accent: "#90a7c8"
+        surface: "#151b24"
+        glow: "rgba(144, 167, 200, 0.25)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 5 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/262793/"
+          - "https://music.163.com/#/song?id=1453957356"
+        note: >-
+          歌词里是嘶哑的逃离请求、无法对视、反复大喊“爱してくれ”却意识到对方看的不是自己，
+          典型的封存型孤独歌。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=1453957356"
+        note: >-
+          有高赞评论直接把它形容成“从美梦中惊醒后面对未破晓黑暗的清醒与悲伤”，
+          这和歌词的体感高度贴合，可作为有效情绪旁证。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie official MV news"
+        urls:
+          - "https://www.hitorie.jp/contents/1005698"
+          - "https://www.hitorie.jp/movies/121322"
+        note: "官方站有明确的 MV 发布页，足够作为官方佐证。"
+        confidence: "high"
+
+  - id: "one-me-two-hearts"
+    rank: 6
+    title: "ワンミーツハー"
+    romanized: "one-Me two-Hearts"
+    apple_visible_release_line: "DEEPER · 2016年"
+    content:
+      epithet: "会先把门栓抬一下的人"
+      summary: >-
+        你不是天真，你只是愿意在明知靠近会出事的前提下，还是先把门开一条缝。
+        你对关系的期待往往很真，不太擅长把“借我一点心”说成玩笑。
+      scene: >-
+        像两个人站在门口，风先从缝里探进来，
+        你表面还在装镇定，心里其实已经把门后的空间想过一遍。
+      gift: "你会给相遇真正的空间，不只是试探，而是愿意承担一点打开之后的后果。"
+      shadow: "太想让相遇成立时，容易忽略自己其实也需要被接住。"
+      ritual: "把你最近最想确认的一段关系，补上一句真正有风险的话。"
+      tags:
+        - "借心"
+        - "门缝来风"
+        - "双向试探"
+    scoring:
+      pivot:
+        dimension: "distance"
+        pole: 1
+      vector:
+        spark: 0.28
+        distance: 1.0
+        focus: 0.18
+        stance: -0.04
+        recovery: 0.56
+      answer_style:
+        lean: 0.46
+        cadence: 0.58
+      palette:
+        accent: "#ff6b8b"
+        surface: "#29151d"
+        glow: "rgba(255, 107, 139, 0.23)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 6 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/200624/"
+          - "https://music.163.com/#/song?id=41672430"
+        note: >-
+          起手就是“把你的心借给我”“我要把门打开”，
+          后面又一路写到理想、开口、强撑，关系轴线极其明确。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=41672430"
+        note: >-
+          热门评论几乎都沿着“想把自己的心借给谁”“已经是你的了”去理解，
+          说明听众确实把这首接成开门型的关系歌。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie special site + Apple Music song page"
+        urls:
+          - "https://www.hitorie.jp/oMtH/"
+          - "https://music.apple.com/jp/song/1526625744"
+        note: "特设站包含 MV 与发行信息，是最好的官方落点。"
+        confidence: "high"
+
+  - id: "worlds-end-dancehall"
+    rank: 7
+    title: "ワールズエンド・ダンスホール"
+    romanized: "World's End Dancehall"
+    apple_visible_release_line: "NOTOK - EP · 2024年"
+    content:
+      epithet: "明知道世界烂掉也还要拉人跳一支的人"
+      summary: >-
+        你不太信“等局势变好再开始”。很多时候，正因为觉得世界够烂，
+        你才更想找个人一起把该吐的吐掉、该跳的跳掉。
+      scene: >-
+        像站在边界线上，眼前什么都没真正变好，
+        但你还是会伸手问一句“要不要干脆一起跳进去？”
+      gift: "你能把末日感转成现场感，越坏的局面，越知道怎么把空气点起来。"
+      shadow: "容易把漂移和狂欢当成止痛药，真正要落地的东西反而一拖再拖。"
+      ritual: "把你最近最想吐槽却一直没吐的那件事，找一个人讲干净。"
+      tags:
+        - "边界线"
+        - "拉人共犯"
+        - "末日舞池"
+    scoring:
+      pivot:
+        dimension: "recovery"
+        pole: -1
+      vector:
+        spark: 0.84
+        distance: 0.38
+        focus: 0.34
+        stance: 0.08
+        recovery: -1.0
+      answer_style:
+        lean: 0.72
+        cadence: 0.92
+      palette:
+        accent: "#ff8c42"
+        surface: "#25160f"
+        glow: "rgba(255, 140, 66, 0.25)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 7 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/364389/"
+          - "https://music.163.com/#/song?id=2645449190"
+        note: >-
+          歌词核心是边界线、拉手、吐出来、一起在世界角落里跳，
+          不是稳定关系，而是把失序和快感并排摆上台面。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=2645449190"
+        note: >-
+          热门评论把这版理解成四个人一起把 wowaka 的歌重新扛起来，带有很强的继承感与现场感，
+          这能解释它为什么既热又带纪念意味。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie NOTOK release news + Apple Music song page"
+        urls:
+          - "https://www.hitorie.jp/contents/1006442"
+          - "https://music.apple.com/jp/song/1777383748"
+        note: "官方新闻明确给出 NOTOK 单曲的收录曲顺序，能确认这是 2024 版落点。"
+        confidence: "high"
+
+  - id: "senseless-wonder"
+    rank: 8
+    title: "センスレス・ワンダー"
+    romanized: "Senseless Wonder"
+    apple_visible_release_line: "WONDER and WONDER · 2014年"
+    content:
+      epithet: "把不规则自尊踩成助跑板的人"
+      summary: >-
+        你身上那种“好像有点别扭，但偏要往前跳”的劲儿很重。
+        你不是没有自我怀疑，而是会连怀疑一起带着跑。
+      scene: >-
+        像前奏刚响，整个人已经被抬起来了；
+        你知道自己不完全适配这个世界，但也正因为这样，反而更想跨过去。
+      gift: "你很会把不服气变成推进力，尤其在别人觉得你该收一点的时候。"
+      shadow: "会把往前冲当成自尊的证明，偶尔忘了停下来看自己是不是快过热。"
+      ritual: "找一件你嘴上说无所谓、其实很在意的事，给它一个明确动作。"
+      tags:
+        - "不规则自尊"
+        - "跨过去"
+        - "警报式高音"
+    scoring:
+      pivot:
+        dimension: "spark"
+        pole: 1
+      vector:
+        spark: 0.74
+        distance: -0.16
+        focus: 0.86
+        stance: 0.38
+        recovery: 0.04
+      answer_style:
+        lean: 0.64
+        cadence: 0.88
+      palette:
+        accent: "#22d7c3"
+        surface: "#101d23"
+        glow: "rgba(34, 215, 195, 0.24)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 8 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/174753/"
+          - "https://music.163.com/#/song?id=29758082"
+        note: >-
+          “イレギュラー”“内侧に咲いた自尊心”“描いていった飛び込む理由”这几层非常稳定地指向
+          失衡、助跑和跨越，不是消沉停留。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=29758082"
+        note: >-
+          评论里最常见的是 siren 一样的高音跳跃、熟到一听前奏就知道是 wowaka，
+          说明听众抓到的不是“可爱”，而是辨识度极高的冲刺感。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie official discography + MV page"
+        urls:
+          - "https://www.hitorie.jp/musics/19873"
+          - "https://www.hitorie.jp/movies/121355"
+        note: "官方曲目页和 MV 页都可用，且是乐队正式站点。"
+        confidence: "high"
+
+  - id: "talkie-dance"
+    rank: 9
+    title: "トーキーダンス"
+    romanized: "Talkie Dance"
+    apple_visible_release_line: "DEEPER · 2015年"
+    content:
+      epithet: "嘴上说黑白，鞋跟却偏要踩出红的人"
+      summary: >-
+        你对自己有时很冷，有时又会突然华丽起来。你会说“我就是这样而已”，
+        但真到了该站上去的时候，你的身体比嘴更诚实。
+      scene: >-
+        像一个吵闹房间里，所有东西都灰掉了，只有那双鞋还是红的；
+        你一边说没意思，一边已经走到台前了。
+      gift: "你能把自我怀疑和舞台冲动同时带着，不必先变完美才开始动。"
+      shadow: "容易在“我根本不在乎”和“其实我很想被看见”之间来回拉扯。"
+      ritual: "给你最近最想做又最想装不在乎的事，安排一个能见人的版本。"
+      tags:
+        - "黑白自述"
+        - "红鞋踩点"
+        - "笑着发疯"
+    scoring:
+      pivot:
+        dimension: "distance"
+        pole: -1
+      vector:
+        spark: 0.48
+        distance: -0.52
+        focus: 0.62
+        stance: -0.14
+        recovery: -0.18
+      answer_style:
+        lean: 0.36
+        cadence: 0.84
+      palette:
+        accent: "#ff4d4d"
+        surface: "#21181a"
+        glow: "rgba(255, 77, 77, 0.22)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 9 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/189127/"
+          - "https://music.163.com/#/song?id=32944111"
+        note: >-
+          歌词里有“颜色是黑白的”和“靴子偏偏很红”，再加上“站上舞台、笑着哭着、继续跳”，
+          是非常典型的表演性自我暴露。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=32944111"
+        note: >-
+          听众经常把它和《ワールズエンド・ダンスホール》的节奏系谱连起来，并强调“只有 wowaka 自己能唱出这种魔幻感”，
+          旁证它的戏剧性和辨识度都很强。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie mono_chrono special site + discography page"
+        urls:
+          - "https://www.hitorie.jp/mono_chrono/"
+          - "https://www.hitorie.jp/musics/19876"
+        note: "特设站直接挂了《トーキーダンス》MV，是非常完整的官方落点。"
+        confidence: "high"
+
+  - id: "coyote-and-ghost"
+    rank: 10
+    title: "コヨーテエンゴースト"
+    romanized: "Coyote and Ghost"
+    apple_visible_release_line: "HOWLS · 2019年"
+    content:
+      epithet: "末班车之后还在上头的人"
+      summary: >-
+        你会被那种不太清醒、却异常鲜活的夜色勾住。别人以为你只是爱玩一点、
+        飘一点，但你自己知道，你是在那些快散掉的时刻里才最像自己。
+      scene: >-
+        像终电刚走，楼梯间还有余温，一个幽灵一样的人从你眼前掠过去，
+        你没有后退，反而更想跟着那团影子再往前一段。
+      gift: "你擅长在游移、醉意和夜色里辨认出真正让自己兴奋的东西。"
+      shadow: "容易把上头当成方向，把酩酊当成靠近，第二天才发现自己其实还没落地。"
+      ritual: "把最近一次你“明知有点危险还是觉得真好玩”的时刻，记下触发点。"
+      tags:
+        - "终电之后"
+        - "幽灵体温"
+        - "夜里上头"
+    scoring:
+      pivot:
+        dimension: "focus"
+        pole: 1
+      vector:
+        spark: 0.38
+        distance: -0.12
+        focus: 0.78
+        stance: 0.18
+        recovery: -0.46
+      answer_style:
+        lean: 0.52
+        cadence: 0.78
+      palette:
+        accent: "#cdb47a"
+        surface: "#201811"
+        glow: "rgba(205, 180, 122, 0.23)"
+    inline_evidence:
+      - kind: "ranking"
+        source: "Apple Music Japan artist page"
+        url: "https://music.apple.com/jp/artist/%E3%83%92%E3%83%88%E3%83%AA%E3%82%A8/775877009"
+        note: "2026-04-18 日本区 Top Songs 第 10 名。"
+        confidence: "high"
+      - kind: "lyrics"
+        source: "Uta-Net + NetEase lyric"
+        urls:
+          - "https://www.uta-net.com/song/262060/"
+          - "https://music.163.com/#/song?id=1342743008"
+        note: >-
+          终电、幽灵、酩酊、一直浮到天亮，这些词把它稳稳钉在夜行与上头的轴线上，
+          不是白天式的清醒决定。
+        confidence: "high"
+      - kind: "comments"
+        source: "NetEase hot comments"
+        url: "https://music.163.com/#/song?id=1342743008"
+        note: >-
+          高赞评论会把郊狼的嚎叫、HOWLS 这个专辑名和这首的封面联想在一起，
+          说明听众对它的“野、夜、会叫”的感受很稳定。
+        confidence: "medium"
+      - kind: "official_or_semiofficial"
+        source: "Hitorie HOWLS special site + Apple Music song page"
+        urls:
+          - "https://www.hitorie.jp/howls/"
+          - "https://music.apple.com/jp/song/1538107263"
+        note: "HOWLS 特设站和 Apple 单曲页都能作为官方/半官方落点。"
+        confidence: "high"

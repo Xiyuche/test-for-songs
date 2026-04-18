@@ -1,8 +1,8 @@
-import { dimensions } from '../data/quiz'
-import type { DimensionId } from '../data/quiz'
+import type { PackDimension } from '../content/schema'
 
 type RadarChartProps = {
-  values: Record<DimensionId, number>
+  dimensions: PackDimension[]
+  values: Record<string, number>
   accent: string
 }
 
@@ -10,8 +10,8 @@ const size = 300
 const center = size / 2
 const radius = 96
 
-const polarPoint = (index: number, distance: number) => {
-  const angle = -Math.PI / 2 + (Math.PI * 2 * index) / dimensions.length
+const polarPoint = (axisCount: number, index: number, distance: number) => {
+  const angle = -Math.PI / 2 + (Math.PI * 2 * index) / axisCount
   return {
     x: center + Math.cos(angle) * distance,
     y: center + Math.sin(angle) * distance,
@@ -22,9 +22,9 @@ const pathFromPoints = (points: { x: number; y: number }[]) =>
   points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ') +
   ' Z'
 
-export function RadarChart({ values, accent }: RadarChartProps) {
+export function RadarChart({ dimensions, values, accent }: RadarChartProps) {
   const polygonPoints = dimensions.map((dimension, index) =>
-    polarPoint(index, ((values[dimension.id] + 1) / 2) * radius),
+    polarPoint(dimensions.length, index, ((values[dimension.id] + 1) / 2) * radius),
   )
 
   const rings = [0.25, 0.5, 0.75, 1]
@@ -34,10 +34,12 @@ export function RadarChart({ values, accent }: RadarChartProps) {
       className="radar-chart"
       viewBox={`0 0 ${size} ${size}`}
       role="img"
-      aria-label="人格维度雷达图"
+      aria-label="歌词维度雷达图"
     >
       {rings.map((ring) => {
-        const ringPoints = dimensions.map((_, index) => polarPoint(index, radius * ring))
+        const ringPoints = dimensions.map((_, index) =>
+          polarPoint(dimensions.length, index, radius * ring),
+        )
         return (
           <path
             key={ring}
@@ -48,8 +50,8 @@ export function RadarChart({ values, accent }: RadarChartProps) {
       })}
 
       {dimensions.map((dimension, index) => {
-        const outerPoint = polarPoint(index, radius)
-        const labelPoint = polarPoint(index, radius + 28)
+        const outerPoint = polarPoint(dimensions.length, index, radius)
+        const labelPoint = polarPoint(dimensions.length, index, radius + 28)
 
         return (
           <g key={dimension.id}>

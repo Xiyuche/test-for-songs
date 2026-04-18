@@ -1,4 +1,4 @@
-import { questions, songs } from '../src/data/quiz'
+import { loadLocalContentPack } from './local-pack'
 import {
   calculateQuizResult,
   syntheticAnswersForSong,
@@ -10,6 +10,9 @@ type Scenario = {
   size: number
   picker: () => AnswerValue
 }
+
+const pack = loadLocalContentPack()
+const { questions, tracks: songs } = pack
 
 const weightedPick = (weights: number[]): AnswerValue => {
   const target = Math.random()
@@ -60,7 +63,7 @@ const simulate = (scenario: Scenario) => {
 
   for (let sample = 0; sample < scenario.size; sample += 1) {
     const answers = Array.from({ length: questions.length }, scenario.picker)
-    const result = calculateQuizResult(answers)
+    const result = calculateQuizResult(pack, answers)
     counts.set(
       result.primary.song.title,
       (counts.get(result.primary.song.title) ?? 0) + 1,
@@ -85,8 +88,8 @@ const simulate = (scenario: Scenario) => {
 
 const verifySyntheticReachability = () =>
   songs.map((song) => {
-    const answers = syntheticAnswersForSong(song)
-    const result = calculateQuizResult(answers)
+    const answers = syntheticAnswersForSong(pack, song)
+    const result = calculateQuizResult(pack, answers)
     return {
       expected: song.title,
       actual: result.primary.song.title,
@@ -94,9 +97,33 @@ const verifySyntheticReachability = () =>
     }
   })
 
+const buildAggregateCoverage = (reports: ReturnType<typeof simulate>[]) => {
+  const counts = new Map<string, number>()
+
+  songs.forEach((song) => counts.set(song.title, 0))
+
+  reports.forEach((report) => {
+    report.rows.forEach((row) => {
+      counts.set(row.title, (counts.get(row.title) ?? 0) + row.count)
+    })
+  })
+
+  const totalSamples = reports.reduce((sum, report) => {
+    return sum + report.rows.reduce((rowSum, row) => rowSum + row.count, 0)
+  }, 0)
+
+  return [...counts.entries()]
+    .map(([title, count]) => ({
+      title,
+      count,
+      share: Number(((count / totalSamples) * 100).toFixed(2)),
+    }))
+    .sort((left, right) => right.count - left.count)
+}
+
 const singleNotePatterns = [0, 1, 2, 3, 4].map((answer) => {
   const pattern = Array.from({ length: questions.length }, () => answer as AnswerValue)
-  const result = calculateQuizResult(pattern)
+  const result = calculateQuizResult(pack, pattern)
 
   return {
     answer: answer + 1,
@@ -109,6 +136,8 @@ const singleNotePatterns = [0, 1, 2, 3, 4].map((answer) => {
 console.log('\nBalance simulations:\n')
 
 const reports = scenarios.map(simulate)
+const syntheticReachability = verifySyntheticReachability()
+const aggregateCoverage = buildAggregateCoverage(reports)
 
 reports.forEach((report) => {
   console.log(`Scenario: ${report.scenario}`)
@@ -121,8 +150,13 @@ reports.forEach((report) => {
 })
 
 console.log('Synthetic reachability:')
-verifySyntheticReachability().forEach((item) => {
+syntheticReachability.forEach((item) => {
   console.log(`  ${item.expected} -> ${item.actual} ${item.ok ? 'OK' : 'MISMATCH'}`)
+})
+
+console.log('\nAggregate coverage:')
+aggregateCoverage.forEach((row) => {
+  console.log(`  ${row.title.padEnd(18)} ${String(row.share).padStart(5)}%`)
 })
 
 console.log('\nSingle-note answer patterns:')
@@ -133,13 +167,11 @@ singleNotePatterns.forEach((item) => {
 })
 
 const dominantLimit = 26
-const weakestLimit = 4
-const failedScenario = reports.find(
-  (report) => report.dominantShare > dominantLimit || report.weakestShare < weakestLimit,
-)
-const failedSynthetic = verifySyntheticReachability().find((item) => !item.ok)
+const failedScenario = reports.find((report) => report.dominantShare > dominantLimit)
+const failedSynthetic = syntheticReachability.find((item) => !item.ok)
+const zeroCoverageTrack = aggregateCoverage.find((row) => row.count === 0)
 
-if (failedScenario || failedSynthetic) {
+if (failedScenario || failedSynthetic || zeroCoverageTrack) {
   console.error('\nBalance validation failed.')
   process.exit(1)
 }

@@ -8,11 +8,12 @@ import {
 } from 'react'
 import { RadarChart } from './components/RadarChart'
 import {
+  contentPack,
   dimensions,
   likertLabels,
   questions,
   songs,
-  sourceLinks,
+  sourceCards,
   type SongProfile,
 } from './data/quiz'
 import {
@@ -98,18 +99,15 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="eyebrow">HITORIE DESTINY TRACK TEST</span>
-            <h1>不是测你像哪种人格，而是看哪首 Hitorie 会先把你认出来。</h1>
-            <p className="hero-lead">
-              参考 SBTI 的多题渐进作答方式，我们把 10 首热门曲目的歌词意象拆成 5
-              条维度，做成一个更像“命中曲”而不是“命中类型”的测试。
-            </p>
+            <span className="eyebrow">{contentPack.ui.hero.eyebrow}</span>
+            <h1>{contentPack.ui.hero.title}</h1>
+            <p className="hero-lead">{contentPack.ui.hero.lead}</p>
             <div className="hero-actions">
               <button className="primary-button" onClick={onStart}>
-                开始测试
+                {contentPack.ui.hero.primaryCta}
               </button>
               <a className="ghost-button" href="#song-atlas">
-                先看十首歌地图
+                {contentPack.ui.hero.secondaryCta}
               </a>
             </div>
           </motion.div>
@@ -121,9 +119,9 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
             transition={{ duration: 0.55, delay: 0.08 }}
           >
             <div className="hero-panel__header">
-              <span>30 道问题</span>
-              <span>5 条歌词坐标</span>
-              <span>10 首命运曲</span>
+              {contentPack.ui.hero.stats.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
             </div>
             <div className="hero-panel__tracks">
               {songs.map((song, index) => (
@@ -148,48 +146,34 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
       </section>
 
       <section className="strip-section">
-        <div>
-          <strong>视觉参考</strong>
-          <p>借了 SBTI 的节奏感，但把结果从“人格标签”改成“歌词命中曲”。</p>
-        </div>
-        <div>
-          <strong>内容边界</strong>
-          <p>歌词用于主题分析，站内不直接嵌入完整歌词文本，改用意象和情绪总结。</p>
-        </div>
-        <div>
-          <strong>结果机制</strong>
-          <p>不靠单题强引导，而是靠正反向混合题和多维匹配减少单曲塌缩。</p>
-        </div>
+        {contentPack.ui.strips.map((item) => (
+          <div key={item.title}>
+            <strong>{item.title}</strong>
+            <p>{item.body}</p>
+          </div>
+        ))}
       </section>
 
       <section className="process-section">
         <div className="section-head">
-          <span className="eyebrow">HOW IT WORKS</span>
-          <h2>这套题不是“你更像谁”，而是“你的状态会被哪首歌接住”</h2>
+          <span className="eyebrow">{contentPack.ui.process.eyebrow}</span>
+          <h2>{contentPack.ui.process.title}</h2>
         </div>
         <div className="process-grid">
-          <article>
-            <strong>01</strong>
-            <h3>30 题渐进作答</h3>
-            <p>每个维度都有正向和反向陈述，避免大家一路点“非常同意”就被拉去同一首。</p>
-          </article>
-          <article>
-            <strong>02</strong>
-            <h3>歌词主题向量</h3>
-            <p>每首歌用“点燃、开门、幻视、硬骨、索求”五个主轴来建模，而不是直接抓字面。</p>
-          </article>
-          <article>
-            <strong>03</strong>
-            <h3>命中曲结果页</h3>
-            <p>输出命中度、维度雷达、Top 3 共鸣歌和一段更像 SBTI 风格的短分析。</p>
-          </article>
+          {contentPack.ui.process.steps.map((step, index) => (
+            <article key={step.title}>
+              <strong>{String(index + 1).padStart(2, '0')}</strong>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
       <section className="atlas-section" id="song-atlas">
         <div className="section-head">
-          <span className="eyebrow">SONG ATLAS</span>
-          <h2>这十首歌不是十种绝对人格，而是十种会在不同阶段命中你的歌词气候</h2>
+          <span className="eyebrow">{contentPack.ui.atlas.eyebrow}</span>
+          <h2>{contentPack.ui.atlas.title}</h2>
         </div>
         <div className="song-grid">
           {songs.map((song) => (
@@ -208,39 +192,23 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
 
       <section className="source-section">
         <div className="section-head">
-          <span className="eyebrow">SOURCES</span>
-          <h2>开发参考与歌词整理边界</h2>
+          <span className="eyebrow">{contentPack.ui.sources.eyebrow}</span>
+          <h2>{contentPack.ui.sources.title}</h2>
         </div>
         <div className="source-grid">
-          <article>
-            <h3>SBTI 交互参考</h3>
-            <p>参考了公开 SBTI 站点的“逐题推进 + 结果分析”节奏，但整体视觉、题库和算法为本项目独立设计。</p>
-            <a href={sourceLinks.sbti} target="_blank" rel="noreferrer">
-              打开 SBTI 站点
-            </a>
-          </article>
-          <article>
-            <h3>GitHub 结构参考</h3>
-            <p>参考 React/TypeScript 多题测验项目的状态组织与页面切换思路，没有直接复制题型和样式。</p>
-            <div className="link-stack">
-              <a href={sourceLinks.githubQuiz} target="_blank" rel="noreferrer">
-                React-Typescript-Quiz-App
-              </a>
-              <a href={sourceLinks.githubMbti} target="_blank" rel="noreferrer">
-                MBTI
-              </a>
-              <a href={sourceLinks.quillforms} target="_blank" rel="noreferrer">
-                Quill Forms
-              </a>
-            </div>
-          </article>
-          <article>
-            <h3>歌曲来源</h3>
-            <p>十首歌名单取自 2026 年 4 月仍可访问的热门排序页；歌词只做内部主题分析，站内不展示完整文本。</p>
-            <a href={sourceLinks.ranking} target="_blank" rel="noreferrer">
-              打开热门歌曲排行
-            </a>
-          </article>
+          {sourceCards.map((card) => (
+            <article key={card.title}>
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+              <div className="link-stack">
+                {card.links.map((link) => (
+                  <a key={link.label} href={link.url} target="_blank" rel="noreferrer">
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </article>
+          ))}
         </div>
       </section>
     </motion.main>
@@ -266,16 +234,18 @@ function QuizScreen({ answers, activeIndex, onAnswer, onBack, onReset }: QuizScr
         <header className="quiz-header">
           <div>
             <span className="eyebrow">QUESTION {String(activeIndex + 1).padStart(2, '0')}</span>
-            <h2>选最像你“最近状态”的那一格</h2>
+            <h2>{contentPack.ui.quiz.title}</h2>
           </div>
           <button className="text-button" onClick={onReset}>
-            重新开始
+            {contentPack.ui.quiz.resetLabel}
           </button>
         </header>
 
         <div className="progress-meta">
-          <span>已完成 {answeredCount} / {questions.length}</span>
-          <span>没有对错，别选“理想中的你”，选“现在的你”。</span>
+          <span>
+            {contentPack.ui.quiz.progressLabel} {answeredCount} / {questions.length}
+          </span>
+          <span>{contentPack.ui.quiz.progressHint}</span>
         </div>
         <div className="progress-bar">
           <div
@@ -288,7 +258,7 @@ function QuizScreen({ answers, activeIndex, onAnswer, onBack, onReset }: QuizScr
           <motion.section key={question.id} className="question-card" {...quizCardTransition}>
             <div className="question-card__meta">
               <span>{String(question.id).padStart(2, '0')} / {questions.length}</span>
-              <span>键盘也可直接按 1-5</span>
+              <span>{contentPack.ui.quiz.keyboardHint}</span>
             </div>
             <p className="question-card__prompt">{question.prompt}</p>
             <div className="scale-grid">
@@ -308,9 +278,9 @@ function QuizScreen({ answers, activeIndex, onAnswer, onBack, onReset }: QuizScr
 
         <div className="quiz-footer">
           <button className="ghost-button" onClick={onBack} disabled={activeIndex === 0}>
-            上一题
+            {contentPack.ui.quiz.backLabel}
           </button>
-          <span>这套题默认一题一页，让每个判断都更接近“当下反应”。</span>
+          <span>{contentPack.ui.quiz.footerHint}</span>
         </div>
       </section>
     </motion.main>
@@ -342,8 +312,10 @@ function ResultScreen({
         >
           <div className="poster-noise" />
           <div className="result-poster__meta">
-            <span>你的命中曲</span>
-            <span>共振度 {primary.resonance}%</span>
+            <span>{contentPack.ui.result.posterLabel}</span>
+            <span>
+              {contentPack.ui.result.resonanceLabel} {primary.resonance}%
+            </span>
           </div>
           <h1>{primary.song.title}</h1>
           <p className="poster-subtitle">{primary.song.epithet}</p>
@@ -357,32 +329,32 @@ function ResultScreen({
 
         <div className="result-side">
           <div className="section-head section-head--compact">
-            <span className="eyebrow">RESULT ANALYSIS</span>
+            <span className="eyebrow">{contentPack.ui.result.analysisEyebrow}</span>
             <h2>{result.summary}</h2>
           </div>
           <div className="result-stat-grid">
             <article>
-              <span>命中稳定度</span>
+              <span>{contentPack.ui.result.stabilityLabel}</span>
               <strong>{result.stability}%</strong>
               <p>{result.footerNote}</p>
             </article>
             <article>
-              <span>第二共鸣</span>
+              <span>{contentPack.ui.result.secondMatchLabel}</span>
               <strong>{result.secondary[0].song.title}</strong>
               <p>{result.secondary[0].song.epithet}</p>
             </article>
             <article>
-              <span>第三共鸣</span>
+              <span>{contentPack.ui.result.thirdMatchLabel}</span>
               <strong>{result.secondary[1].song.title}</strong>
               <p>{result.secondary[1].song.epithet}</p>
             </article>
           </div>
           <div className="result-actions">
             <button className="primary-button" onClick={onRetake}>
-              再测一次
+              {contentPack.ui.result.retakeLabel}
             </button>
             <a className="ghost-button" href={primary.song.sources.ranking} target="_blank" rel="noreferrer">
-              查看歌曲来源
+              {contentPack.ui.result.sourceLabel}
             </a>
           </div>
         </div>
@@ -391,10 +363,10 @@ function ResultScreen({
       <section className="result-grid">
         <article className="analysis-card">
           <div className="section-head section-head--compact">
-            <span className="eyebrow">YOUR SHAPE</span>
-            <h2>五维歌词坐标</h2>
+            <span className="eyebrow">{contentPack.ui.result.radarEyebrow}</span>
+            <h2>{contentPack.ui.result.radarTitle}</h2>
           </div>
-          <RadarChart values={result.profile.dimensions} accent={accent} />
+          <RadarChart dimensions={dimensions} values={result.profile.dimensions} accent={accent} />
           <div className="dimension-list">
             {dimensions.map((dimension) => {
               const value = result.profile.dimensions[dimension.id]
@@ -423,7 +395,7 @@ function ResultScreen({
 
         <article className="analysis-card">
           <div className="section-head section-head--compact">
-            <span className="eyebrow">WHY THIS SONG</span>
+            <span className="eyebrow">{contentPack.ui.result.whyEyebrow}</span>
             <h2>为什么会命中 {primary.song.title}</h2>
           </div>
           <div className="reason-list">
@@ -435,20 +407,20 @@ function ResultScreen({
             ))}
           </div>
           <div className="scene-card">
-            <h3>你的歌词场景</h3>
+            <h3>{contentPack.ui.result.sceneTitle}</h3>
             <p>{primary.song.scene}</p>
           </div>
           <div className="insight-stack">
             <article>
-              <span>你会带来的东西</span>
+              <span>{contentPack.ui.result.giftTitle}</span>
               <p>{primary.song.gift}</p>
             </article>
             <article>
-              <span>容易被忽略的阴影</span>
+              <span>{contentPack.ui.result.shadowTitle}</span>
               <p>{primary.song.shadow}</p>
             </article>
             <article>
-              <span>适合现在的动作</span>
+              <span>{contentPack.ui.result.ritualTitle}</span>
               <p>{primary.song.ritual}</p>
             </article>
           </div>
@@ -457,8 +429,8 @@ function ResultScreen({
 
       <section className="top-match-section">
         <div className="section-head section-head--compact">
-          <span className="eyebrow">TOP MATCHES</span>
-          <h2>除了命中曲，你也和这两首保持强共鸣</h2>
+          <span className="eyebrow">{contentPack.ui.result.topMatchesEyebrow}</span>
+          <h2>{contentPack.ui.result.topMatchesTitle}</h2>
         </div>
         <div className="top-match-grid">
           {[primary, ...result.secondary].map((match, index) => (
@@ -515,7 +487,7 @@ export default function App() {
   const finishQuiz = (nextAnswers: QuizAnswers) => {
     const completedAnswers = nextAnswers as AnswerValue[]
     startTransition(() => {
-      setResult(calculateQuizResult(completedAnswers))
+      setResult(calculateQuizResult(contentPack, completedAnswers))
       setScreen('result')
     })
   }
