@@ -1,6 +1,6 @@
 # Hitorie Destiny Track Test
 
-一个参考 `SBTI / MBTI` 作答节奏、但结果落到 `ひとりえ` 十首热门歌曲上的互动测试站。
+一个参考 `SBTI / MBTI` 作答节奏、但结果落到 `Hitorie` 十首热门歌曲上的互动测试站。
 
 ## 这个版本做了什么
 
@@ -92,7 +92,7 @@ npm run test:balance
 - React Quiz 结构参考：[AhmedTohamy01/React-Typescript-Quiz-App](https://github.com/AhmedTohamy01/React-Typescript-Quiz-App)
 - MBTI 站点结构参考：[rojcode/MBTI](https://github.com/rojcode/MBTI)
 - 题型/表单交互参考：[quillforms/quillforms](https://github.com/quillforms/quillforms)
-- ひとりえ热门歌曲排行：[https://www.ragnet.co.jp/ranking-hitorie-songs](https://www.ragnet.co.jp/ranking-hitorie-songs)
+- Hitorie 热门歌曲排行：[https://www.ragnet.co.jp/ranking-hitorie-songs](https://www.ragnet.co.jp/ranking-hitorie-songs)
 - 歌词主题整理来源：各歌曲对应的 `Uta-Net` 页面链接已写在 `src/data/quiz.ts`
 
 ## 后续可以继续做

@@ -99,7 +99,7 @@ function LandingScreen({ onStart }: { onStart: () => void }) {
             transition={{ duration: 0.5 }}
           >
             <span className="eyebrow">HITORIE DESTINY TRACK TEST</span>
-            <h1>不是测你像哪种人格，而是看哪首ひとりえ会先把你认出来。</h1>
+            <h1>不是测你像哪种人格，而是看哪首 Hitorie 会先把你认出来。</h1>
             <p className="hero-lead">
               参考 SBTI 的多题渐进作答方式，我们把 10 首热门曲目的歌词意象拆成 5
               条维度，做成一个更像“命中曲”而不是“命中类型”的测试。
