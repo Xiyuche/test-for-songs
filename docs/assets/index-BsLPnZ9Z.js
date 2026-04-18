@@ -149,123 +149,123 @@ questions:
   - id: "q01"
     dimension: "spark"
     direction: 1
-    prompt: "如果一个想法让我心动，我通常会先做一点，再决定值不值得继续。"
+    prompt: "当一个念头同时让我兴奋又有点没底时，我通常还是会先试一小步。"
   - id: "q02"
     dimension: "spark"
     direction: -1
-    prompt: "我更习惯把情绪放凉之后，再决定要不要行动。"
+    prompt: "如果一件事的边界还没看清，我宁愿先按住自己，不想靠热情冒进。"
   - id: "q03"
     dimension: "spark"
     direction: 1
-    prompt: "比起等时机成熟，我更愿意边试边修正。"
+    prompt: "比起把方案磨到稳妥，我更常在做的过程中才知道自己真正站哪边。"
   - id: "q04"
     dimension: "spark"
     direction: -1
-    prompt: "计划一旦被打乱，我会先停下来重排，而不是立刻硬冲。"
+    prompt: "一旦现场开始失控，我首先会想把节奏拉回来，而不是顺势加码。"
   - id: "q05"
     dimension: "spark"
     direction: 1
-    prompt: "临场的冲动，常常比事先推演更能让我看见自己到底想要什么。"
+    prompt: "有时只有把自己丢进局里，我才分得清那到底是冲动还是认真。"
   - id: "q06"
     dimension: "spark"
     direction: -1
-    prompt: "我很少因为一时热烈就改掉原本的节奏。"
+    prompt: "哪怕当下很上头，只要它会打乱后面的安排，我通常还是会收住。"
   - id: "q07"
     dimension: "distance"
     direction: 1
-    prompt: "状态不稳的时候，我通常会主动去找一个能说话的人。"
+    prompt: "状态差的时候，我更怕一直闷着，所以宁愿冒点暴露的风险也会找人说。"
   - id: "q08"
     dimension: "distance"
     direction: -1
-    prompt: "再亲近的人，也很难碰到我最核心的那一层。"
+    prompt: "就算关系很近，我也会把最要命的那层留到最后，不轻易递出去。"
   - id: "q09"
     dimension: "distance"
     direction: 1
-    prompt: "如果一段关系还有继续靠近的可能，我愿意先把门打开一点。"
+    prompt: "如果我觉得一段关系值得继续，我通常会先给一点真实反应，而不是等对方全交底。"
   - id: "q10"
     dimension: "distance"
     direction: -1
-    prompt: "我更习惯自己消化情绪，而不是把它直接带进关系里。"
+    prompt: "很多话我不是没有，只是更想自己消化完，再决定有没有必要说出来。"
   - id: "q11"
     dimension: "distance"
     direction: 1
-    prompt: "对我来说，被理解值得承担一点暴露自己的风险。"
+    prompt: "如果我真的想被理解，被误解的风险通常拦不住我开口。"
   - id: "q12"
     dimension: "distance"
     direction: -1
-    prompt: "哪怕很在意，我也常常把关键的话留在心里。"
+    prompt: "我常常宁可让别人觉得我还好，也不想把关键那句直接交出去。"
   - id: "q13"
     dimension: "focus"
     direction: 1
-    prompt: "我做决定时，常会被一种说不清的预感牵着走。"
+    prompt: "做决定时，我很难只看证据；那种说不清的气味和预感也会算数。"
   - id: "q14"
     dimension: "focus"
     direction: -1
-    prompt: "比起氛围和想象，我更相信已经发生的事实。"
+    prompt: "如果一件事没有明确落点，再动人的氛围也很难让我长期相信。"
   - id: "q15"
     dimension: "focus"
     direction: 1
-    prompt: "一个人真正的样子，常常藏在他没说出口的那些画面里。"
+    prompt: "比起别人已经说出口的话，我更容易被那些没讲明的暗示和画面勾住。"
   - id: "q16"
     dimension: "focus"
     direction: -1
-    prompt: "如果一件事暂时看不见落点，我很难一直投入热情。"
+    prompt: "我能欣赏暧昧感，但真要投入时间和感情，我还是要看到它落地。"
   - id: "q17"
     dimension: "focus"
     direction: 1
-    prompt: "我会被模糊、暧昧、带一点幻觉感的东西长久吸引。"
+    prompt: "有些东西越是模糊、失真、说不清，我反而越会一直惦记。"
   - id: "q18"
     dimension: "focus"
     direction: -1
-    prompt: "我更容易被明确、可验证、能落地的东西说服。"
+    prompt: "最后真正能说服我的，通常不是感觉对了，而是代价和结果都摆在那儿。"
   - id: "q19"
     dimension: "stance"
     direction: 1
-    prompt: "当所有人都默认一条路的时候，我反而会想试试别的方向。"
+    prompt: "当大家都默认同一种做法时，我会本能地去找那个不太顺眼但更像我的选项。"
   - id: "q20"
     dimension: "stance"
     direction: -1
-    prompt: "就算心里不完全认同，我也能为了整体顺利先配合。"
+    prompt: "哪怕心里有点别扭，只要配合能把事推进，我通常不会急着把态度顶到前面。"
   - id: "q21"
     dimension: "stance"
     direction: 1
-    prompt: "如果某种规则让我窒息，我会想办法把它拧开。"
+    prompt: "如果某套规则让我越来越不像自己，我多半会去拧它，哪怕气氛会变难看。"
   - id: "q22"
     dimension: "stance"
     direction: -1
-    prompt: "很多事情与其硬碰硬，不如先顺着局面找到空间。"
+    prompt: "很多场合里，我宁愿先借力转弯，也不想每次都把冲突打到明面上。"
   - id: "q23"
     dimension: "stance"
     direction: 1
-    prompt: "我宁愿承受一点冲突，也不想把自己磨得太圆。"
+    prompt: "我会为了保住自己的棱角接受一点摩擦，不太擅长把自己磨成谁都好用的样子。"
   - id: "q24"
     dimension: "stance"
     direction: -1
-    prompt: "在大多数场合里，保持流动性比坚持姿态更重要。"
+    prompt: "对我来说，保留回旋空间往往比当场把立场钉死更重要。"
   - id: "q25"
     dimension: "recovery"
     direction: 1
-    prompt: "一旦真正想要某样东西，我很难装作自己其实无所谓。"
+    prompt: "一旦我真的想要某样东西，装得云淡风轻通常只会让我更难受。"
   - id: "q26"
     dimension: "recovery"
     direction: -1
-    prompt: "关系、目标或情绪一旦变得太沉，我会本能地把自己抽离一点。"
+    prompt: "当一段关系或目标开始变重，我的第一反应常常不是抓紧，而是先往后退半步。"
   - id: "q27"
     dimension: "recovery"
     direction: 1
-    prompt: "比起把渴望收起来，我更愿意正面承认自己在期待什么。"
+    prompt: "比起把渴望藏好，我更倾向于承认它，哪怕这样显得不够体面。"
   - id: "q28"
     dimension: "recovery"
     direction: -1
-    prompt: "很多时候我宁愿继续流动，也不想被任何人或状态钉住。"
+    prompt: "很多时候我会故意给自己留出口，因为一旦被钉住，我反而开始想逃。"
   - id: "q29"
     dimension: "recovery"
     direction: 1
-    prompt: "我会想反复确认某种连接是不是真的存在。"
+    prompt: "如果我在意一段连接，我会忍不住去确认它是不是还在，不太能完全装作没事。"
   - id: "q30"
     dimension: "recovery"
     direction: -1
-    prompt: "当事情开始需要被定义时，我更容易想转身去别的地方。"
+    prompt: "事情一旦逼近“要不要定义一下”的时刻，我经常会突然更想保持流动。"
 
 ranking_decision:
   canonical_source:
