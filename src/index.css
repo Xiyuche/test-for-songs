@@ -886,19 +886,23 @@ svg {
 @media (max-width: 720px) {
   .page {
     width: min(var(--max-width), calc(100% - 18px));
-    padding-bottom: 40px;
+    padding-bottom: 28px;
   }
 
   .hero-section,
   .process-section,
   .atlas-section,
   .source-section,
-  .quiz-shell,
   .analysis-card,
   .top-match-section,
   .result-side,
   .result-poster {
     padding: 22px;
+    border-radius: 24px;
+  }
+
+  .quiz-shell {
+    padding: 18px 16px 22px;
     border-radius: 24px;
   }
 
@@ -913,7 +917,9 @@ svg {
   }
 
   .question-card__prompt {
-    font-size: 1.36rem;
+    margin-top: 14px;
+    font-size: 1.2rem;
+    line-height: 1.42;
   }
 
   .hero-panel__header,
@@ -927,19 +933,73 @@ svg {
     align-items: flex-start;
   }
 
+  .progress-meta {
+    margin-top: 14px;
+    font-size: 0.82rem;
+    gap: 4px;
+  }
+
+  .progress-bar {
+    margin-top: 10px;
+  }
+
+  .question-card {
+    margin-top: 18px;
+    padding: 18px 16px;
+    border-radius: 22px;
+  }
+
+  .question-card__meta {
+    gap: 4px;
+    font-size: 0.76rem;
+  }
+
+  .question-card__meta span:last-child {
+    display: none;
+  }
+
   .scale-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
   }
 
   .scale-button {
-    min-height: 86px;
-    grid-template-columns: 42px 1fr;
-    align-items: center;
-    text-align: left;
+    flex: 0 1 calc((100% - 16px) / 3);
+    max-width: calc((100% - 16px) / 3);
+    min-height: 62px;
+    min-width: 0;
+    padding: 10px 8px;
+    gap: 4px;
+    justify-items: center;
+    align-content: center;
+    text-align: center;
+    border-radius: 16px;
   }
 
   .scale-button span {
-    font-size: 1.4rem;
+    font-size: 1.02rem;
+    line-height: 1;
+  }
+
+  .scale-button strong {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    word-break: keep-all;
+  }
+
+  .quiz-footer {
+    margin-top: 16px;
+    gap: 10px;
+    font-size: 0.82rem;
+  }
+
+  .quiz-footer .ghost-button {
+    min-height: 46px;
+    min-width: 96px;
+    padding: 0 18px;
   }
 
   .result-stat-grid {
@@ -948,5 +1008,24 @@ svg {
 
   .result-poster h1 {
     font-size: clamp(2.5rem, 15vw, 4rem);
+  }
+}
+
+@media (max-width: 420px) {
+  .quiz-shell {
+    padding: 16px 14px 20px;
+  }
+
+  .question-card {
+    padding: 16px 14px;
+  }
+
+  .scale-button {
+    min-height: 58px;
+    padding: 9px 6px;
+  }
+
+  .scale-button strong {
+    font-size: 0.76rem;
   }
 }
