@@ -11,6 +11,9 @@ type Scenario = {
   picker: () => AnswerValue
 }
 
+const isFiniteNumber = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value)
+
 const pack = loadLocalContentPack()
 const { questions, tracks: songs } = pack
 
@@ -58,12 +61,39 @@ const scenarios: Scenario[] = [
 
 const simulate = (scenario: Scenario) => {
   const counts = new Map<string, number>()
+  let invalidResult: string | null = null
 
   songs.forEach((song) => counts.set(song.title, 0))
 
   for (let sample = 0; sample < scenario.size; sample += 1) {
     const answers = Array.from({ length: questions.length }, scenario.picker)
     const result = calculateQuizResult(pack, answers)
+
+    const profileValues = Object.values(result.profile.dimensions)
+    const numericValues = [
+      result.primary.score,
+      result.primary.probability,
+      result.primary.resonance,
+      result.stability,
+      result.profile.lean,
+      result.profile.cadence,
+      result.profile.variation,
+      ...profileValues,
+      ...result.secondary.flatMap((match) => [
+        match.score,
+        match.probability,
+        match.resonance,
+      ]),
+    ]
+
+    if (
+      numericValues.some((value) => !isFiniteNumber(value)) ||
+      profileValues.some((value) => value < -1 || value > 1)
+    ) {
+      invalidResult = `Invalid numeric result in scenario ${scenario.name}, sample ${sample}`
+      break
+    }
+
     counts.set(
       result.primary.song.title,
       (counts.get(result.primary.song.title) ?? 0) + 1,
@@ -83,6 +113,7 @@ const simulate = (scenario: Scenario) => {
     rows,
     dominantShare: rows[0].share,
     weakestShare: rows.at(-1)?.share ?? 0,
+    invalidResult,
   }
 }
 
@@ -90,10 +121,23 @@ const verifySyntheticReachability = () =>
   songs.map((song) => {
     const answers = syntheticAnswersForSong(pack, song)
     const result = calculateQuizResult(pack, answers)
+    const profileValues = Object.values(result.profile.dimensions)
     return {
       expected: song.title,
       actual: result.primary.song.title,
       ok: result.primary.song.id === song.id,
+      numbersOk:
+        [
+          result.primary.score,
+          result.primary.probability,
+          result.primary.resonance,
+          result.stability,
+          result.profile.lean,
+          result.profile.cadence,
+          result.profile.variation,
+          ...profileValues,
+        ].every((value) => isFiniteNumber(value)) &&
+        profileValues.every((value) => value >= -1 && value <= 1),
     }
   })
 
@@ -151,7 +195,9 @@ reports.forEach((report) => {
 
 console.log('Synthetic reachability:')
 syntheticReachability.forEach((item) => {
-  console.log(`  ${item.expected} -> ${item.actual} ${item.ok ? 'OK' : 'MISMATCH'}`)
+  console.log(
+    `  ${item.expected} -> ${item.actual} ${item.ok ? 'OK' : 'MISMATCH'} ${item.numbersOk ? '' : 'INVALID-NUMBERS'}`.trim(),
+  )
 })
 
 console.log('\nAggregate coverage:')
@@ -167,11 +213,16 @@ singleNotePatterns.forEach((item) => {
 })
 
 const dominantLimit = 26
-const failedScenario = reports.find((report) => report.dominantShare > dominantLimit)
-const failedSynthetic = syntheticReachability.find((item) => !item.ok)
+const failedScenario = reports.find(
+  (report) => report.dominantShare > dominantLimit || report.invalidResult,
+)
+const failedSynthetic = syntheticReachability.find((item) => !item.ok || !item.numbersOk)
 const zeroCoverageTrack = aggregateCoverage.find((row) => row.count === 0)
 
 if (failedScenario || failedSynthetic || zeroCoverageTrack) {
+  if (failedScenario?.invalidResult) {
+    console.error(failedScenario.invalidResult)
+  }
   console.error('\nBalance validation failed.')
   process.exit(1)
 }

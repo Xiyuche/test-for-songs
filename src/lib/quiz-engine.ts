@@ -40,11 +40,22 @@ type TargetSearchResult = {
 }
 
 const centeredScale = [-1, -0.5, 0, 0.5, 1] as const
+const neutralAnswerIndex: AnswerValue = 2
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(max, Math.max(min, value))
 
 const round = (value: number) => Math.round(value * 100) / 100
+
+const isFiniteNumber = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value)
+
+const clampUnitValue = (value: number) => clamp(value, -1, 1)
+
+const normalizeAnswer = (answer: number): AnswerValue =>
+  Number.isInteger(answer) && answer >= 0 && answer <= 4
+    ? (answer as AnswerValue)
+    : neutralAnswerIndex
 
 const average = (values: number[]) =>
   values.length === 0
@@ -105,7 +116,12 @@ export const getUserProfile = (dataset: QuizDataset, answers: AnswerValue[]): Us
 
   answers.forEach((answer, index) => {
     const question = dataset.questions[index]
-    const centeredValue = centeredScale[answer]
+
+    if (!question || !(question.dimension in sums)) {
+      return
+    }
+
+    const centeredValue = centeredScale[normalizeAnswer(answer)] ?? 0
     rawValues.push(centeredValue)
     sums[question.dimension] += centeredValue * question.direction
     counts[question.dimension] += 1
@@ -144,8 +160,8 @@ const getStyleDistance = (
   profile: UserProfile,
   song: PackTrack,
 ): number => {
-  const leanDistance = Math.abs(profile.lean - song.answerStyle.lean) / 2
-  const cadenceDistance = Math.abs(profile.cadence - song.answerStyle.cadence)
+  const leanDistance = Math.abs(profile.lean - clampUnitValue(song.answerStyle.lean)) / 2
+  const cadenceDistance = Math.abs(profile.cadence - clamp(song.answerStyle.cadence, 0, 1))
 
   return clamp(leanDistance * 0.42 + cadenceDistance * 0.58, 0, 1)
 }
@@ -182,7 +198,10 @@ const rankSongsForProfile = (
   dataset.tracks
     .map((song) => ({
       song,
-      score: getAffinityScore(dataset, profile, song),
+      score: (() => {
+        const score = getAffinityScore(dataset, profile, song)
+        return isFiniteNumber(score) ? score : Number.NEGATIVE_INFINITY
+      })(),
     }))
     .sort((left, right) => right.score - left.score)
 
@@ -251,32 +270,46 @@ export const calculateQuizResult = (
   const profile = getUserProfile(dataset, answers)
   const rawMatches = rankSongsForProfile(dataset, profile)
 
+  if (rawMatches.length === 0) {
+    throw new Error('calculateQuizResult requires at least one track')
+  }
+
   const temperature = 5.2
-  const weights = rawMatches.map((match) => Math.exp(match.score * temperature))
-  const totalWeight = weights.reduce((sum, value) => sum + value, 0)
+  const weights = rawMatches.map((match) =>
+    isFiniteNumber(match.score) ? Math.exp(match.score * temperature) : 1,
+  )
+  const rawTotalWeight = weights.reduce((sum, value) => sum + value, 0)
+  const totalWeight =
+    isFiniteNumber(rawTotalWeight) && rawTotalWeight > 0 ? rawTotalWeight : rawMatches.length
 
   const rankedMatches = rawMatches
     .map((match, index) => {
-      const probability = weights[index] / totalWeight
+      const rawProbability = weights[index] / totalWeight
+      const probability = isFiniteNumber(rawProbability)
+        ? rawProbability
+        : 1 / rawMatches.length
+      const rawResonance = clamp(
+        54 + probability * 175 + Math.max(match.score, 0) * 20,
+        50,
+        97,
+      )
+
       return {
         ...match,
         probability,
-        resonance: Math.round(
-          clamp(54 + probability * 175 + Math.max(match.score, 0) * 20, 50, 97),
-        ),
+        resonance: Math.round(isFiniteNumber(rawResonance) ? rawResonance : 50),
         reasons: getReasons(dataset, profile, match.song),
       }
     })
     .sort((left, right) => right.score - left.score)
 
   const [primary, ...secondary] = rankedMatches
-  const gap = primary.score - secondary[0].score
+  const gap = secondary[0] ? primary.score - secondary[0].score : 0
   const energy = average(
     dataset.dimensions.map((dimension) => Math.abs(profile.dimensions[dimension.id])),
   )
-  const stability = Math.round(
-    clamp(54 + gap * 150 + profile.cadence * 18 + energy * 16, 52, 96),
-  )
+  const rawStability = clamp(54 + gap * 150 + profile.cadence * 18 + energy * 16, 52, 96)
+  const stability = Math.round(isFiniteNumber(rawStability) ? rawStability : 52)
   const footerNote =
     stability >= 70
       ? dataset.ui.result.footerStable

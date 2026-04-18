@@ -42,7 +42,16 @@ const quizCardTransition = {
   transition: { duration: 0.28 },
 }
 
-const formatAxisValue = (value: number) => Math.round(((value + 1) / 2) * 100)
+const normalizeAxisValue = (value: number | undefined) => {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return 0
+  }
+
+  return Math.min(1, Math.max(-1, value))
+}
+
+const formatAxisValue = (value: number | undefined) =>
+  Math.round(((normalizeAxisValue(value) + 1) / 2) * 100)
 
 const applyAnswer = (
   currentAnswers: QuizAnswers,
@@ -296,6 +305,10 @@ function ResultScreen({
 }) {
   const primary = result.primary
   const accent = primary.song.palette.accent
+  const secondaryMatches = [
+    result.secondary[0] ?? result.primary,
+    result.secondary[1] ?? result.secondary[0] ?? result.primary,
+  ]
 
   return (
     <motion.main className="page result-page" {...pageTransition}>
@@ -340,13 +353,13 @@ function ResultScreen({
             </article>
             <article>
               <span>{contentPack.ui.result.secondMatchLabel}</span>
-              <strong>{result.secondary[0].song.title}</strong>
-              <p>{result.secondary[0].song.epithet}</p>
+              <strong>{secondaryMatches[0].song.title}</strong>
+              <p>{secondaryMatches[0].song.epithet}</p>
             </article>
             <article>
               <span>{contentPack.ui.result.thirdMatchLabel}</span>
-              <strong>{result.secondary[1].song.title}</strong>
-              <p>{result.secondary[1].song.epithet}</p>
+              <strong>{secondaryMatches[1].song.title}</strong>
+              <p>{secondaryMatches[1].song.epithet}</p>
             </article>
           </div>
           <div className="result-actions">
@@ -369,7 +382,7 @@ function ResultScreen({
           <RadarChart dimensions={dimensions} values={result.profile.dimensions} accent={accent} />
           <div className="dimension-list">
             {dimensions.map((dimension) => {
-              const value = result.profile.dimensions[dimension.id]
+              const value = normalizeAxisValue(result.profile.dimensions[dimension.id])
               return (
                 <div key={dimension.id} className="dimension-row">
                   <div className="dimension-row__head">

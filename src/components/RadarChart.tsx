@@ -22,9 +22,21 @@ const pathFromPoints = (points: { x: number; y: number }[]) =>
   points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ') +
   ' Z'
 
+const normalizeAxisValue = (value: number | undefined) => {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    return 0
+  }
+
+  return Math.min(1, Math.max(-1, value))
+}
+
 export function RadarChart({ dimensions, values, accent }: RadarChartProps) {
   const polygonPoints = dimensions.map((dimension, index) =>
-    polarPoint(dimensions.length, index, ((values[dimension.id] + 1) / 2) * radius),
+    polarPoint(
+      dimensions.length,
+      index,
+      ((normalizeAxisValue(values[dimension.id]) + 1) / 2) * radius,
+    ),
   )
 
   const rings = [0.25, 0.5, 0.75, 1]

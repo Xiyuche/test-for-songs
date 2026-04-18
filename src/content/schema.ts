@@ -258,6 +258,14 @@ const assertInteger = (value: unknown, path: string): number => {
   return number
 }
 
+const assertInRange = (value: number, min: number, max: number, path: string): number => {
+  if (value < min || value > max) {
+    throw new Error(`${path} must be between ${min} and ${max}`)
+  }
+
+  return value
+}
+
 const assertBoolean = (value: unknown, path: string): boolean => {
   if (typeof value !== 'boolean') {
     throw new Error(`${path} must be a boolean`)
@@ -1386,6 +1394,23 @@ const parseNormalizedContentPack = (root: UnknownRecord, sourceName: string): Co
         `${sourceName}.tracks[${index}] has invalid vector keys; missing=${missingKeys.join(',') || 'none'} extra=${extraKeys.join(',') || 'none'}`,
       )
     }
+
+    Object.entries(track.vector).forEach(([dimensionId, value]) => {
+      assertInRange(value, -1, 1, `${sourceName}.tracks[${index}].vector.${dimensionId}`)
+    })
+
+    assertInRange(
+      track.answerStyle.lean,
+      -1,
+      1,
+      `${sourceName}.tracks[${index}].answerStyle.lean`,
+    )
+    assertInRange(
+      track.answerStyle.cadence,
+      0,
+      1,
+      `${sourceName}.tracks[${index}].answerStyle.cadence`,
+    )
 
     if (!track.sources.ranking) {
       throw new Error(`${sourceName}.tracks[${index}] must include a ranking source`)
